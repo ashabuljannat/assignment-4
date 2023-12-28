@@ -1,0 +1,205 @@
+
+
+//   const numberOfReviews = rResult.length;
+
+// // Calculate the total rating
+// const totalRating = rResult.reduce((acc, review) => acc + review.rating, 0);
+
+// console.log(`Number of reviews: ${numberOfReviews}`);
+// console.log(`Total rating: ${totalRating}`);
+
+  // const result = await Course.find();
+  // return result;
+// console.log(meta);
+  // console.log(queryResult);    // console.log(user)   // console.log(11,userData, payload);
+  // console.log(userPassword)
+  // return queryResult; 
+    console.log(reqQuery);
+      // const userPasswords: any = await User.findOne({ _id: userData._id }).select(
+  //   'passwords',
+  // );
+  console.log(queryObj);    // console.log('dbuser', userPasswords.passwords);
+  // console.log(queryPage, queryLimit);
+  // console.log(reqQuery);
+  // console.log(outputObject);
+  //   // console.log(page)
+  // const queryResult = await Course.find(reqMainQuery);
+    // const queryMinPrice = Number(reqQuery.minPrice);
+      // const queryMaxPrice = Number(reqQuery.maxPrice);
+    // find({ price: {$gte:9}, price: {$lte:90}}) { $and: [ { price: { $ne: 1.99 } }, { price: { $exists: true } } ] }
+       const { tags, sortBy, sortOrder } = req.query;
+  // const newObject1 = {
+  //   pass: payload?.currentPassword,
+  //   createdAt: new Date(),
+  // };
+        // Create a filter based on the provided tags parameter
+        const filter = tags ? { 'tags': { $elemMatch: { 'name': tags } } } : {};
+
+        // Create a sort object based on the provided sortBy and sortOrder parameters
+        const sort = {};
+        if (sortBy) {
+            sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
+        }
+  // console.log(sort);
+  // console.log({ short: sortOrder === 'desc' ? -1 : 1 });
+        // Find documents in the collection that match the filter and apply sorting
+        const courses = await Course.find(filter).sort(sort);
+          // const queryResult = await Course.find(queryObj).sort({
+  //   sortBy: sortOrder === 'desc' ? -1 : 1,
+  // });
+      // const queryResult = await Course.find(detailsLevelFilter);
+         // console.log(queryTags);
+         
+  // console.log(allPageData)
+  // console.log(result);     // data: allPageData[page],
+
+      // passwords: newObjectHash,
+      // passwords: userPasswords?.passwords,
+  
+
+// router.patch(
+//   '/:id',
+//   validateRequest(CourseValidations.updateCourseValidationSchema),
+//   CourseControllers.updateCourse,
+// );
+
+
+// router.put(
+//   '/:courseId/assign-faculties',
+//   validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
+//   CourseControllers.assignFacultiesWithCourse,
+// );
+
+// router.delete(
+//   '/:courseId/remove-faculties',
+//   validateRequest(CourseValidations.facultiesWithCourseValidationSchema),
+//   CourseControllers.removeFacultiesFromCourse,
+// );
+
+
+// const deleteCourseFromDB = async (id: string) => {
+//   const result = await Course.findByIdAndUpdate(
+//     id,
+//     { price: 99999, endDate: '2023-06-30' },
+//     {
+//       new: true,
+//     },
+//   );
+//   return result;
+// };
+
+
+// const deleteCourse = catchAsync(async (req, res) => {
+//   const { courseId } = req.params;
+//   const result = await CourseServices.deleteCourseFromDB(courseId);
+
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Course update delete field successfully ',
+//     data: result,
+//   });
+// });
+
+router.patch(
+  '/:courseId',
+  validateRequest(CourseValidations.updateCourseValidationSchema),
+  CourseControllers.updateCourse,
+);
+
+  function createUpdateObject(original: any, update: any) {
+    const updatedObject = { ...original };
+
+    for (const key in update) {
+      if (typeof update[key] === 'object' && !Array.isArray(update[key])) {
+        updatedObject[key] = createUpdateObject(original[key], update[key]);
+      } else {
+        if (key === 'tags') {
+          updatedObject[key] = mergeTags(original[key], update[key]);
+        } else {
+          updatedObject[key] = update[key];
+        }
+      }
+    }
+    // console.log(10, updatedObject);   // console.log(id, payload);
+  // const queryDataResult = await Course.findById(id);
+    return updatedObject;
+  }
+
+  function mergeTags(tags1: any, tags2: any) {
+    const mergedTags = [];
+
+    for (const tag1 of tags1) {
+      const matchingTag2 = tags2.find((tag2: any) => tag1.name === tag2.name);
+      if (matchingTag2) {
+        mergedTags.push(matchingTag2);
+      } else {
+        mergedTags.push(tag1);
+      }
+    }
+    for (const tag2 of tags2) {
+      const matchingTag = mergedTags.find((tag) => tag.name === tag2.name);
+      if (!matchingTag) {
+        mergedTags.push(tag2);
+      }
+    }
+    return mergedTags;
+  }
+  // console.log(11, queryDataResult, payload);       // console.log(tagsForDelete, tagsForAdd);
+  const thirdData = createUpdateObject(queryDataResult, payload);
+  // console.log(12, thirdData._doc);
+  console.log(thirdData);        //  console.log(11,updateTag);   // console.log(11,deleteTag);    // console.log(12,tagsForAdd);
+
+  
+  // const updatedBasicCourseInfo = await Course.findByIdAndUpdate(id, thirdData, {
+  //   new: true,
+  //   runValidators: true,
+  // });
+  // const { preRequisiteCourses, ...courseRemainingData } = payload;
+  
+  // const isCourseTagExist: any = await Course.findOne({ _id: id }, { tags: 1 });
+  // const courseTagExistName = isCourseTagExist.tags.map((el) => el.name);
+
+  // console.log(10, isCourseExist.tags);
+  // console.log(11, isCourseTagExist);    // console.log('dbuser', userPrePassword);
+  // console.log(12, courseTagExistName);    // console.log('shat down dont match');
+
+        // { $addToSet: { passwords: { $each: [newObject1] } } },
+      // passwords: userPasswords?.passwords,
+      // passwords: { pass: newHashedPassword, createdAt: new Date() },
+      // passwords: {
+      //   pass: pushUnique(userPasswords?.passwords, newHashedPassword),
+      //   createdAt: new Date(),
+      // },
+
+        const isPasswordMatch = await array.some(async (obj: any) => {
+    // const match = await bcrypt.compare(newObj.pass, obj.pass);
+    // console.log('first', match);
+  });
+  // console.log('2nd', isPasswordMatch);
+  // if (!isPasswordMatch) {
+  //   array.push(newObj);
+
+  //   if (array.length > 3) {
+  //     array.shift(); // Remove the oldest element
+  //   }
+
+  //   return false; // Successfully added
+  // }
+  // else {
+  //   return true; // Matching pass found, not added
+  // }
+      // previousPassword: { pass: userPassword?.password, createdAt: new Date() },
+  // const newObjectHash = {
+  //   pass: newHashedPassword,
+  //   createdAt: new Date(),
+  // };
+    // const newObject = {
+  //   pass: payload?.newPassword,
+  //   createdAt: new Date(),
+  // };    console.log('dbuser2', userPassword,userPrePassword,userPrePassword2);
+  console.log('shat down previous 2');    console.log('next', newHashedPassword);
+  // console.log('dbuser2', userPasswords.passwords);   console.log('shat down previous');
+  // const match = pushUniqueByPassHash(newObject, userPasswords?.passwords);
+  // console.log('match', match);   console.log('shat down current');
+  
